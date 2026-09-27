@@ -116,18 +116,18 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen  bg-gray-200 flex flex-row justify-center items-center py-10 text-black">
-      <div className="mx-auto   px-4">
+    <main className="flex flex-col items-center justify-center min-h-screen gap-4 p-4 py-10 text-black sm:p-6 md:p-8 lg:p-10 xl:p-12 md:flex-row sm:gap-6 md:gap-8 lg:gap-10">
+      <div className="w-full">
         {/* CREATE FORM */}
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 justify-center w-3xl rounded-lg bg-gray-300 p-5 shadow"
+          className="flex flex-col justify-center gap-4 p-5 bg-gray-300 rounded-lg shadow"
         >
-          <h1 className="text-2xl text-black font-bold">Todo App</h1>
+          <h1 className="text-2xl font-bold text-black">Todo App</h1>
 
           {editId === null ? (
-            <div className="flex flex-col gap-4  ">
+            <div className="flex flex-col gap-4 ">
               <input
                 type="text"
                 placeholder="Enter todo..."
@@ -138,7 +138,7 @@ export default function Home() {
                     title: e.target.value,
                   })
                 }
-                className="rounded border font-bold border-gray-400 p-2 outline-none focus:border-gray-500"
+                className="p-2 font-bold border border-gray-400 rounded outline-none focus:border-gray-500"
               />
 
               <textarea
@@ -150,12 +150,12 @@ export default function Home() {
                     description: e.target.value,
                   })
                 }
-                className="min-h-24 rounded border border-gray-400 text-gray-700 p-2 outline-none focus:border-gray-500"
+                className="p-2 text-gray-700 border border-gray-400 rounded outline-none min-h-24 focus:border-gray-500"
               />
 
               <button
                 type="submit"
-                className="rounded bg-gray-500 px-4 py-2 font-medium text-white hover:bg-gray-600"
+                className="px-4 py-2 font-medium text-white bg-gray-500 rounded hover:bg-gray-600"
               >
                 Add Todo
               </button>
@@ -178,13 +178,13 @@ export default function Home() {
                     title: e.target.value,
                   })
                 }
-                className="rounded border font-bold border-gray-400 p-2 outline-none focus:border-gray-500"
+                className="p-2 font-bold border border-gray-400 rounded outline-none focus:border-gray-500"
               />
 
               <textarea
                 placeholder="Description"
                 value={editTask.description}
-                className="min-h-24 rounded border border-gray-400 text-gray-700 p-2 outline-none focus:border-gray-500"
+                className="p-2 text-gray-700 border border-gray-400 rounded outline-none min-h-24 focus:border-gray-500"
                 // EDIT CHANGE 12:
                 // Update editTask.description when the user types.
                 onChange={(e) =>
@@ -196,12 +196,12 @@ export default function Home() {
               />
 
               <div className="flex gap-2 ">
-                <button className="rounded bg-red-500 px-4 py-2 font-medium text-white hover:bg-gray-600">
+                <button className="px-4 py-2 font-medium text-white bg-red-500 rounded hover:bg-gray-600">
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded bg-gray-500 px-4 py-2 font-medium text-white hover:bg-gray-600"
+                  className="px-4 py-2 font-medium text-white bg-gray-500 rounded hover:bg-gray-600"
                 >
                   Save
                 </button>
@@ -213,13 +213,13 @@ export default function Home() {
 
       {/* DISPLAY TASKS */}
 
-      <div className="mx-auto mt-10 max-w-2.5xl flex flex-col gap-3">
+      <div className="flex flex-col w-full gap-3">
         {task.map((task) => (
           <li
-            className="bg-gray-200 list-none gap-2 my-3  rounded-md p-2 border-2 border-gray-300 w-2xl"
+            className="gap-2 p-2 my-3 list-none bg-gray-200 border-2 border-gray-300 rounded-md"
             key={task.id}
           >
-            <div className="p-2 flex justify-between items-center ">
+            <div className="flex items-center justify-between p-2 ">
               <div>
                 <div>
                   <div>
@@ -231,13 +231,13 @@ export default function Home() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => startEditing(task)}
-                      className="border-gray-700 hover:bg-gray-800 px-3 py-1 cursor-pointer rounded-lg font-bold bg-gray-500 text-white "
+                      className="px-3 py-1 font-bold text-white bg-gray-500 border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 "
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => deleteTask(task.id)}
-                      className="border-gray-700 cursor-pointer px-3 py-1 rounded-lg font-bold bg-red-500 hover:bg-red-700 text-white "
+                      className="px-3 py-1 font-bold text-white bg-red-500 border-gray-700 rounded-lg cursor-pointer hover:bg-red-700 "
                     >
                       Delete
                     </button>
