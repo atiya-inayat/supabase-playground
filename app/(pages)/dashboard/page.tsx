@@ -10,6 +10,7 @@ export default function Dashboard() {
   });
 
   const [task, setTask] = useState([]);
+  const [userId, setUserId] = useState("");
 
   // This state stores the NEW values while we are editing a Todo.
   const [editTask, setEditTask] = useState({
@@ -20,13 +21,30 @@ export default function Dashboard() {
   // This stores the ID of the Todo that we are currently editing.
   const [editId, setEditId] = useState(null);
 
+  const fetchUser = async () => {
+    const user = await supabase.auth.getUser();
+
+    console.log({ user });
+    // setUser(user);
+
+    const userId = user.data.user?.id;
+    setUserId(userId!);
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   // ---------------- CREATE ----------------
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     if (editId === null) {
-      const { error } = await supabase.from("tasks").insert(newTask);
+      const { error } = await supabase.from("tasks").insert({
+        ...newTask,
+        user_id: userId,
+      });
 
       if (error) {
         console.error("Error while adding new task...", error.message, newTask);
