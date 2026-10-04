@@ -9,6 +9,8 @@ export async function proxy(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  console.log("PROXY USER:", user);
   if (!user) {
     // dont let them continue . send them somewhere else - e.g "home"
     return NextResponse.redirect(new URL("/login", request.url));
