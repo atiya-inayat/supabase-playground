@@ -31,10 +31,5 @@ export default function Home() {
     };
   }, []);
 
-  return (
-    <main>
-      <h1>Welcome to the Todo App</h1>
-      {session ? <Dashboard /> : <Login />}
-    </main>
-  );
+  return <main>{session ? <Dashboard /> : <Login />}</main>;
 }

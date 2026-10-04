@@ -2,6 +2,7 @@
 
 import EditTask from "@/app/components/EditTask";
 import Form from "@/app/components/Form";
+import SideBar from "@/app/components/SideBar";
 import { supabase } from "@/app/supabase-client";
 import { useEffect, useState } from "react";
 
@@ -70,6 +71,7 @@ export default function Dashboard() {
           <Form userId={userId} onClose={() => setShowForm(false)} />
         )}
       </div>
+      <SideBar />
 
       {/* DISPLAY TASKS */}
 
