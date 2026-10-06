@@ -1,7 +1,8 @@
+import { createClient } from "@/lib/supabase/client";
 import React, { useEffect, useState } from "react";
-import { supabase } from "../supabase-client";
 
 const EditTask = ({ task, onClose, refreshTasks }) => {
+  const supabase = createClient();
   // This state stores the NEW values while we are editing a Todo.
   const [editTask, setEditTask] = useState({
     title: "",
@@ -27,8 +28,16 @@ const EditTask = ({ task, onClose, refreshTasks }) => {
   const updateTask = async (id) => {
     const { error } = await supabase
       .from("tasks")
-      .update(editTask)
-      .eq("id", id);
+      .update({
+        title: editTask.title,
+        description: editTask.description,
+        priority: editTask.priority,
+        status: editTask.status,
+      })
+      .eq("id", id)
+      .select();
+
+    console.log("Updating:", id, editTask);
 
     if (error) {
       console.error("Update failed...", error.message);

@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "./supabase-client";
 import Dashboard from "./(pages)/dashboard/page";
 import Link from "next/link";
 import Login from "./(pages)/login/page";
+import { createClient } from "@/lib/supabase/client";
+
+const supabase = createClient();
 
 export default function Home() {
   const [session, setSession] = useState<any>(null);

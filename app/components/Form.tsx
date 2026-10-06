@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "../supabase-client";
+import { createClient } from "@/lib/supabase/client";
 
 const Form = ({ userId, onClose }) => {
+  const supabase = createClient();
+
   const [newTask, setNewTask] = useState({
     title: "",
     description: "",
@@ -14,13 +16,22 @@ const Form = ({ userId, onClose }) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
+    console.log({
+      newTask,
+      userId,
+    });
     const { error } = await supabase.from("tasks").insert({
       ...newTask,
       user_id: userId,
     });
 
     if (error) {
-      console.error("Error while adding new task...", error.message, newTask);
+      console.error(
+        "Error while adding new task...",
+        error.message,
+        newTask,
+        userId,
+      );
       return;
     }
     setNewTask({

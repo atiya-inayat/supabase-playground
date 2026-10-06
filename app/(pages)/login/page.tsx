@@ -32,6 +32,16 @@ export default function Login() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        // "After authentication, bring me back to my Next.js callback route."
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  };
+
   // return (
   //   <main className="flex items-center justify-center min-h-screen bg-gray-100">
   //     <div className="p-8 text-black bg-white border-2 border-gray-300 rounded-lg shadow-md">
@@ -162,6 +172,13 @@ export default function Login() {
               type="submit"
             >
               Sign in
+            </button>
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="w-full px-4 py-2 mt-4 font-bold text-white bg-purple-700 rounded-md cursor-pointer hover:bg-purple-600"
+            >
+              Sign in with Google
             </button>
 
             <span className="text-gray-500 text-sm">
