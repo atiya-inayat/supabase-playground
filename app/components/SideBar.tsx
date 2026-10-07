@@ -1,6 +1,37 @@
+"use client";
+
+import { createClient } from "@/lib/supabase/client";
 import Logout from "./Logout";
+import { useEffect } from "react";
+import Link from "next/link";
+
+const supabase = createClient();
 
 const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
+  // const fetchUser = async () => {
+  //   const {
+  //     error,
+  //     data: { user },
+  //   } = await supabase.auth.getUser();
+
+  //   if (error) {
+  //     console.error("Error fetching user:", error);
+  //     return null;
+  //   } else {
+  //     console.log("User fetched successfully:", user);
+  //   }
+  //   if (error) {
+  //     console.error("Error fetching user:", error);
+  //     return null;
+  //   } else {
+  //     console.log("User fetched successfully:", user);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchUser();
+  // }, []);
+
   return (
     <div
       className={`flex flex-col  h-screen p-4 bg-white ${sidebarOpen ? "w-64 " : "w-16 items-center"}  transition-all duration-300 ease-in `}
@@ -31,11 +62,12 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
           </h1>
 
           <div className="flex items-center justify-between gap-2 p-2 my-3 bg-white text-sm border border-gray-200 rounded-md text-gray-500">
-            <button className="focus:text-purple-700">⊞</button>
             <button
               className={`flex items-center gap-2 focus:text-purple-700 ${sidebarOpen ? "block" : "hidden"}`}
             >
-              Dashboard
+              <span className="focus:text-purple-700">⊞</span>
+              {/* <Dashboard /> */}
+              <Link href="/dashboard">Dashboard</Link>
             </button>
 
             <span className={`${sidebarOpen ? "block" : "hidden"}`}>5</span>
@@ -46,7 +78,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
             <button
               className={`flex items-center gap-2 focus:text-purple-700 ${sidebarOpen ? "block" : "hidden"}`}
             >
-              Completed
+              <Link href="/dashboard/completed">Completed</Link>
             </button>
 
             <span className={`${sidebarOpen ? "block" : "hidden"}`}>2</span>
@@ -57,7 +89,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
             <button
               className={`flex items-center gap-2 focus:text-purple-700 ${sidebarOpen ? "block" : "hidden"}`}
             >
-              Settings
+              <Link href="/dashboard/settings">Settings</Link>
             </button>
           </div>
         </div>

@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import Dashboard from "./(pages)/dashboard/page";
 import Link from "next/link";
-import Login from "./(pages)/login/page";
+
 import { createClient } from "@/lib/supabase/client";
+import Login from "./login/page";
 
 const supabase = createClient();
 

@@ -2,7 +2,6 @@
 
 import EditTask from "@/app/components/EditTask";
 import Form from "@/app/components/Form";
-import SideBar from "@/app/components/SideBar";
 import { createClient } from "@/lib/supabase/client";
 // import { supabase } from "@/app/supabase-client";
 
@@ -14,7 +13,6 @@ export default function Dashboard() {
 
   const [showForm, setShowForm] = useState(false);
   const [editTaskId, setEditTaskId] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const supabase = createClient();
   const fetchUser = async () => {
     const {
@@ -70,9 +68,6 @@ export default function Dashboard() {
 
   return (
     <main className="flex  items-center  justify-between min-h-screen   text-black ">
-      <div>
-        <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      </div>
       <div>
         <div className=" bg-amber-300">
           {/* CREATE FORM */}
