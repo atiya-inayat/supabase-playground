@@ -57,41 +57,67 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
 
         {/* Menu */}
         <div className="mt-6">
-          <h1 className={`text-gray-400 ${sidebarOpen ? "block" : "hidden"}`}>
-            Menu
+          <h1
+            className={`mb-3 text-xs font-medium text-gray-400 ${
+              sidebarOpen ? "block" : "hidden"
+            }`}
+          >
+            MENU
           </h1>
 
-          <div className="flex items-center justify-between gap-2 p-2 my-3 bg-white text-sm border border-gray-200 rounded-md text-gray-500">
-            <button
-              className={`flex items-center gap-2 focus:text-purple-700 ${sidebarOpen ? "block" : "hidden"}`}
+          {/* Dashboard */}
+          <Link
+            href="/dashboard"
+            className="flex items-center justify-between w-full p-2 my-2 text-sm text-gray-500 rounded-md hover:bg-purple-50 hover:text-purple-700"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-base">⊞</span>
+
+              <span className={sidebarOpen ? "block" : "hidden"}>
+                Dashboard
+              </span>
+            </div>
+
+            <span
+              className={`px-2 py-0.5 text-xs rounded-full bg-purple-100 text-purple-700 ${
+                sidebarOpen ? "block" : "hidden"
+              }`}
             >
-              <span className="focus:text-purple-700">⊞</span>
-              {/* <Dashboard /> */}
-              <Link href="/dashboard">Dashboard</Link>
-            </button>
+              5
+            </span>
+          </Link>
 
-            <span className={`${sidebarOpen ? "block" : "hidden"}`}>5</span>
-          </div>
+          {/* Completed */}
+          <Link
+            href="/dashboard/completed"
+            className="flex items-center justify-between w-full p-2 my-2 text-sm text-gray-500 rounded-md hover:bg-purple-50 hover:text-purple-700"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-base">✓</span>
 
-          <div className="flex items-center justify-between gap-2 p-2 my-3 bg-white border border-gray-200 text-sm rounded-md text-gray-500">
-            <span className="focus:text-purple-700">✓</span>
-            <button
-              className={`flex items-center gap-2 focus:text-purple-700 ${sidebarOpen ? "block" : "hidden"}`}
+              <span className={sidebarOpen ? "block" : "hidden"}>
+                Completed
+              </span>
+            </div>
+
+            <span
+              className={`px-2 py-0.5 text-xs rounded-full bg-purple-100 text-purple-700 ${
+                sidebarOpen ? "block" : "hidden"
+              }`}
             >
-              <Link href="/dashboard/completed">Completed</Link>
-            </button>
+              2
+            </span>
+          </Link>
 
-            <span className={`${sidebarOpen ? "block" : "hidden"}`}>2</span>
-          </div>
+          {/* Settings */}
+          <Link
+            href="/dashboard/settings"
+            className="flex items-center w-full gap-3 p-2 my-2 text-sm text-gray-500 rounded-md hover:bg-purple-50 hover:text-purple-700"
+          >
+            <span className="text-base">⚙</span>
 
-          <div className="flex items-center justify-between gap-2 p-2 my-3 bg-white border border-gray-200 text-sm rounded-md text-gray-500">
-            <span>⚙</span>
-            <button
-              className={`flex items-center gap-2 focus:text-purple-700 ${sidebarOpen ? "block" : "hidden"}`}
-            >
-              <Link href="/dashboard/settings">Settings</Link>
-            </button>
-          </div>
+            <span className={sidebarOpen ? "block" : "hidden"}>Settings</span>
+          </Link>
         </div>
       </div>
 
