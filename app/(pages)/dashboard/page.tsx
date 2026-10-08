@@ -1,17 +1,18 @@
 "use client";
 
 import EditTask from "@/app/components/EditTask";
-import Form from "@/app/components/Form";
 import { createClient } from "@/lib/supabase/client";
-// import { supabase } from "@/app/supabase-client";
 
 import { useEffect, useState } from "react";
+import AddTaskBtnCont from "@/app/components/AddTaskBtnCont";
+import CurrentDate from "@/app/components/CurrentDate";
+import FilterCards from "@/app/components/FilterCards";
+import TaskTable from "@/app/components/TaskTable";
 
 export default function Dashboard() {
   const [task, setTask] = useState([]);
   const [userId, setUserId] = useState("");
 
-  const [showForm, setShowForm] = useState(false);
   const [editTaskId, setEditTaskId] = useState(null);
   const supabase = createClient();
   const fetchUser = async () => {
@@ -23,7 +24,7 @@ export default function Dashboard() {
     // setUser(user);
 
     const userId = user?.id;
-    console.log("dashboard : userid is ; ", userId);
+    // console.log("dashboard : userid is ; ", userId);
     setUserId(userId!);
   };
 
@@ -67,63 +68,68 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <main className="flex  items-center  justify-between min-h-screen   text-black ">
+    <main className="flex bg-white flex-col  w-full   min-h-screen   text-black ">
+      <div className="w-full flex items-center justify-between border-b border-gray-300">
+        <h1 className="text-lg font-bold p-4">Dashboard</h1>
+        <p className="p-4 text-gray-400 text-sm">
+          <CurrentDate />
+        </p>
+      </div>
+      <div className=" mt-2 p-4 w-full">
+        <AddTaskBtnCont userId={userId} />
+      </div>
+
       <div>
-        <div className=" bg-amber-300">
-          {/* CREATE FORM */}
+        <FilterCards />
+      </div>
 
-          <button onClick={() => setShowForm(true)}>Add task</button>
-          {showForm && (
-            <Form userId={userId} onClose={() => setShowForm(false)} />
-          )}
-        </div>
+      <div>
+        <TaskTable />
+      </div>
 
-        <div className="flex flex-col w-full gap-3">
-          {task.map((task) => (
-            <li
-              className="gap-2 p-2 my-3 list-none bg-gray-200 border-2 border-gray-300 rounded-md"
-              key={task.id}
-            >
-              <div className="flex items-center justify-between p-2 ">
+      <div className="flex flex-col w-full gap-3">
+        {task.map((task) => (
+          <li
+            className="gap-2 p-2 my-3 list-none bg-gray-200 border-2 border-gray-300 rounded-md"
+            key={task.id}
+          >
+            <div className="flex items-center justify-between p-2 ">
+              <div>
                 <div>
                   <div>
-                    <div>
-                      <h2 className="text-lg font-bold ">{task.title}</h2>
+                    <h2 className="text-lg font-bold ">{task.title}</h2>
 
-                      <p className="text-gray-600 ">{task.description}</p>
-                      <p className="text-gray-600 ">
-                        Priority: {task.priority}
-                      </p>
-                      <p className="text-gray-600 ">Status: {task.status}</p>
-                    </div>
+                    <p className="text-gray-600 ">{task.description}</p>
+                    <p className="text-gray-600 ">Priority: {task.priority}</p>
+                    <p className="text-gray-600 ">Status: {task.status}</p>
+                  </div>
 
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setEditTaskId(task.id)}
-                        className="px-3 py-1 font-bold text-white bg-gray-500 border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 "
-                      >
-                        Edit
-                      </button>
-                      {editTaskId === task.id && (
-                        <EditTask
-                          task={task}
-                          onClose={() => setEditTaskId(null)}
-                          refreshTasks={Task}
-                        />
-                      )}
-                      <button
-                        onClick={() => deleteTask(task.id)}
-                        className="px-3 py-1 font-bold text-white bg-red-500 border-gray-700 rounded-lg cursor-pointer hover:bg-red-700 "
-                      >
-                        Delete
-                      </button>
-                    </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setEditTaskId(task.id)}
+                      className="px-3 py-1 font-bold text-white bg-gray-500 border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 "
+                    >
+                      Edit
+                    </button>
+                    {editTaskId === task.id && (
+                      <EditTask
+                        task={task}
+                        onClose={() => setEditTaskId(null)}
+                        refreshTasks={Task}
+                      />
+                    )}
+                    <button
+                      onClick={() => deleteTask(task.id)}
+                      className="px-3 py-1 font-bold text-white bg-red-500 border-gray-700 rounded-lg cursor-pointer hover:bg-red-700 "
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
-            </li>
-          ))}
-        </div>
+            </div>
+          </li>
+        ))}
       </div>
     </main>
   );

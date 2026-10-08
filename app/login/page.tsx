@@ -26,7 +26,7 @@ export default function Login() {
     if (error) {
       console.error("Error logging in:", error);
     } else {
-      console.log("login: data is ", user);
+      // console.log("login: data is ", user);
       router.push("/dashboard");
       console.log("Login successful");
     }

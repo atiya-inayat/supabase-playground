@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-const Form = ({ userId, onClose }) => {
+const CreateTaskForm = ({ userId, onClose }) => {
   const supabase = createClient();
 
   const [newTask, setNewTask] = useState({
@@ -166,4 +166,4 @@ const Form = ({ userId, onClose }) => {
   );
 };
 
-export default Form;
+export default CreateTaskForm;

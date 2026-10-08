@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Dashboard from "./(pages)/dashboard/page";
-import Link from "next/link";
 
 import { createClient } from "@/lib/supabase/client";
 import Login from "./login/page";

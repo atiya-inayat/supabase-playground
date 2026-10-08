@@ -2,35 +2,32 @@
 
 import { createClient } from "@/lib/supabase/client";
 import Logout from "./Logout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const supabase = createClient();
 
 const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
-  // const fetchUser = async () => {
-  //   const {
-  //     error,
-  //     data: { user },
-  //   } = await supabase.auth.getUser();
+  const [user, setUser] = useState(null);
 
-  //   if (error) {
-  //     console.error("Error fetching user:", error);
-  //     return null;
-  //   } else {
-  //     console.log("User fetched successfully:", user);
-  //   }
-  //   if (error) {
-  //     console.error("Error fetching user:", error);
-  //     return null;
-  //   } else {
-  //     console.log("User fetched successfully:", user);
-  //   }
-  // };
+  const fetchUser = async () => {
+    const {
+      error,
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  // useEffect(() => {
-  //   fetchUser();
-  // }, []);
+    if (error) {
+      console.error("Error fetching user:", error);
+      return null;
+    } else {
+      // console.log("User fetched successfully from sidebar :", user);
+      setUser(user);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <div
@@ -132,10 +129,12 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
             </div>
 
             <div
-              className={`flex flex-col ${sidebarOpen ? "block" : "hidden"}`}
+              className={`flex  flex-col ${sidebarOpen ? "block" : "hidden"}`}
             >
-              <h2 className="font-bold">Name</h2>
-              <p className="text-gray-500 text-sm">email@example.com</p>
+              <h2 className="font-bold text-black">
+                {user?.user_metadata?.name}
+              </h2>{" "}
+              <p className="text-gray-500 text-sm">{user?.email}</p>
             </div>
           </div>
 

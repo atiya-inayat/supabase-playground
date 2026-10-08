@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const signup = () => {
@@ -10,20 +11,27 @@ const signup = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
+  const router = useRouter();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { error } = await supabase.auth.signUp({
       email,
       password,
+
       options: {
         emailRedirectTo: "http://localhost:3001/",
+        data: {
+          name: name,
+        },
       },
     });
 
     if (error) {
       console.error("Error signing up:", error);
     } else {
+      router.push("/dashboard");
       console.log("Signup successful");
     }
   };

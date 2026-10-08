@@ -3,11 +3,7 @@
 import { useState } from "react";
 import SideBar from "@/app/components/SideBar";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
