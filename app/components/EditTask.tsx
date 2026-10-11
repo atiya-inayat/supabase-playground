@@ -13,20 +13,47 @@ const EditTask = ({ task, onClose, refreshTasks }) => {
     id: null,
   });
 
-  // This stores the ID of the Todo that we are currently editing.
-  const [editId, setEditId] = useState(null);
-
-  const handleUpdateTask = (e) => {
-    e.preventDefault();
-    updateTask(editId);
-  };
-
   // ---------------- UPDATE ----------------
 
   // id = WHICH Todo should be updated?
   // editTask = WHAT should that Todo become?
-  const updateTask = async (id) => {
-    const { error } = await supabase
+  // const updateTask = async (id) => {
+  //   const { data, error } = await supabase
+  //     .from("tasks")
+  //     .update({
+  //       title: editTask.title,
+  //       description: editTask.description,
+  //       priority: editTask.priority,
+  //       status: editTask.status,
+  //     })
+  //     .eq("id", task.id)
+  //     .select();
+
+  //   console.log("Updating:", id, editTask);
+
+  //   if (error) {
+  //     console.error("Update failed...", error.message);
+  //     return;
+  //   }
+  //   setEditTask({
+  //     title: "",
+  //     description: "",
+  //     priority: "medium",
+  //     status: "todo",
+  //     created_at: new Date().toISOString(),
+  //     id: null,
+  //   });
+
+  //   setEditId(null);
+  //   await refreshTasks();
+  //   onClose();
+  // };
+
+  const updateTask = async () => {
+    console.log("Values being saved:", editTask);
+    console.log("Task ID:", task.id);
+
+    const { data, error } = await supabase
       .from("tasks")
       .update({
         title: editTask.title,
@@ -34,28 +61,37 @@ const EditTask = ({ task, onClose, refreshTasks }) => {
         priority: editTask.priority,
         status: editTask.status,
       })
-      .eq("id", id)
+      .eq("id", task.id)
       .select();
 
-    console.log("Updating:", id, editTask);
-
     if (error) {
-      console.error("Update failed...", error.message);
+      console.error("Update failed:", error.message);
       return;
     }
-    setEditTask({
-      title: "",
-      description: "",
-      priority: "medium",
-      status: "todo",
-      created_at: new Date().toISOString(),
-      id: null,
-    });
 
-    setEditId(null);
+    console.log("Updated row from Supabase:", data);
+
+    if (!data || data.length === 0) {
+      console.error("No row was updated. Check the task ID and RLS policies.");
+      return;
+    }
+
     await refreshTasks();
     onClose();
   };
+
+  const handleUpdateTask = (e) => {
+    e.preventDefault();
+    updateTask();
+  };
+
+  // This stores the ID of the Todo that we are currently editing.
+  const [editId, setEditId] = useState(null);
+
+  // const handleUpdateTask = (e) => {
+  //   e.preventDefault();
+  //   updateTask(editId);
+  // };
 
   useEffect(() => {
     setEditId(task.id);

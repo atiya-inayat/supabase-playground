@@ -2,24 +2,21 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
+import EditTask from "./EditTask";
+import { fetchTasks } from "@/lib/tasks";
 
 const supabase = createClient();
 
 const TaskTable = () => {
   const [tasks, settask] = useState([]);
+  const [editTaskId, setEditTaskId] = useState(null);
 
-  const fetchTask = async () => {
-    const { error, data } = await supabase.from("tasks").select("*");
-
-    if (error) {
-      console.log("Error loading tasks", error);
-    } else {
-      settask(data);
-    }
+  const loadTasks = async () => {
+    const data = await fetchTasks();
+    settask(data);
   };
-
   useEffect(() => {
-    fetchTask();
+    loadTasks();
   }, []);
 
   const getStatusColor = (status) => {
@@ -74,9 +71,19 @@ const TaskTable = () => {
               <td className={getStatusColor(task.status)}>{task.status}</td>
               <td>{new Date(task.created_at).toISOString().split("T")[0]}</td>
               <td className="gap-2 flex">
-                <button className="border-purple-200 text-sm border rounded-lg px-2 py-1 text-purple-700">
+                <button
+                  onClick={() => setEditTaskId(task.id)}
+                  className="border-purple-200 text-sm border rounded-lg px-2 py-1 text-purple-700"
+                >
                   Edit
                 </button>
+                {editTaskId === task.id && (
+                  <EditTask
+                    task={task}
+                    onClose={() => setEditTaskId(null)}
+                    refreshTasks={loadTasks}
+                  />
+                )}
                 <button className="border-red-200 text-sm border rounded-lg px-2 py-1 text-red-700">
                   Delete
                 </button>

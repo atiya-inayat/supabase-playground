@@ -8,6 +8,7 @@ import AddTaskBtnCont from "@/app/components/AddTaskBtnCont";
 import CurrentDate from "@/app/components/CurrentDate";
 import FilterCards from "@/app/components/FilterCards";
 import TaskTable from "@/app/components/TaskTable";
+import { fetchTasks } from "@/lib/tasks";
 
 export default function Dashboard() {
   const [task, setTask] = useState([]);
@@ -34,16 +35,13 @@ export default function Dashboard() {
 
   // ---------------- READ ----------------
 
-  const Task = async () => {
-    const { data, error } = await supabase.from("tasks").select("*");
-
-    if (error) {
-      console.error("Error while loading tasks...", error.message);
-      return;
-    }
-
+  const loadTasks = async () => {
+    const data = await fetchTasks();
     setTask(data);
   };
+  useEffect(() => {
+    loadTasks();
+  }, []);
 
   // ---------------- UPDATE ----------------
 
@@ -58,14 +56,14 @@ export default function Dashboard() {
       return;
     }
 
-    Task();
+    await loadTasks();
   };
 
   // ---------------- LOAD TASKS ----------------
 
-  useEffect(() => {
-    Task();
-  }, []);
+  // useEffect(() => {
+  //   Task();
+  // }, []);
 
   return (
     <main className="flex bg-white flex-col  w-full   min-h-screen   text-black ">
@@ -115,7 +113,7 @@ export default function Dashboard() {
                       <EditTask
                         task={task}
                         onClose={() => setEditTaskId(null)}
-                        refreshTasks={Task}
+                        refreshTasks={loadTasks}
                       />
                     )}
                     <button
