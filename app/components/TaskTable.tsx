@@ -4,20 +4,12 @@ import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import EditTask from "./EditTask";
 import { fetchTasks } from "@/lib/tasks";
+import DeleteTask from "./DeleteTask";
 
 const supabase = createClient();
 
-const TaskTable = () => {
-  const [tasks, settask] = useState([]);
+const TaskTable = ({ refreshTasks, tasks }) => {
   const [editTaskId, setEditTaskId] = useState(null);
-
-  const loadTasks = async () => {
-    const data = await fetchTasks();
-    settask(data);
-  };
-  useEffect(() => {
-    loadTasks();
-  }, []);
 
   const getStatusColor = (status) => {
     if (status === "todo") return "text-purple-700";
@@ -81,12 +73,11 @@ const TaskTable = () => {
                   <EditTask
                     task={task}
                     onClose={() => setEditTaskId(null)}
-                    refreshTasks={loadTasks}
+                    refreshTasks={refreshTasks}
                   />
                 )}
-                <button className="border-red-200 text-sm border rounded-lg px-2 py-1 text-red-700">
-                  Delete
-                </button>
+
+                <DeleteTask task={task} refreshTasks={refreshTasks} />
               </td>
             </tr>
           ))}

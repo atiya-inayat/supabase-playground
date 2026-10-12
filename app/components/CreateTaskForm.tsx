@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-const CreateTaskForm = ({ userId, onClose }) => {
+const CreateTaskForm = ({ userId, onClose, refreshTasks }) => {
   const supabase = createClient();
 
   const [newTask, setNewTask] = useState({
@@ -40,6 +40,8 @@ const CreateTaskForm = ({ userId, onClose }) => {
       priority: "medium",
       status: "todo",
     });
+    await refreshTasks();
+    onClose();
   };
 
   return (

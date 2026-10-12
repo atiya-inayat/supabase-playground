@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Form from "./CreateTaskForm";
 import CurrentDate from "./CurrentDate";
+import { fetchTasks } from "@/lib/tasks";
 
-const AddTaskBtnCont = ({ userId }) => {
+const AddTaskBtnCont = ({ userId, refreshTasks }) => {
   const [showForm, setShowForm] = useState(false);
 
   return (
@@ -22,7 +23,11 @@ const AddTaskBtnCont = ({ userId }) => {
           + Add task{" "}
         </button>
         {showForm && (
-          <Form userId={userId} onClose={() => setShowForm(false)} />
+          <Form
+            userId={userId}
+            refreshTasks={refreshTasks}
+            onClose={() => setShowForm(false)}
+          />
         )}
       </div>
     </div>

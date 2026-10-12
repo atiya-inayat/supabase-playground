@@ -59,12 +59,6 @@ export default function Dashboard() {
     await loadTasks();
   };
 
-  // ---------------- LOAD TASKS ----------------
-
-  // useEffect(() => {
-  //   Task();
-  // }, []);
-
   return (
     <main className="flex bg-white flex-col  w-full   min-h-screen   text-black ">
       <div className="w-full flex items-center justify-between border-b border-gray-300">
@@ -74,7 +68,7 @@ export default function Dashboard() {
         </p>
       </div>
       <div className=" mt-2 p-4 w-full">
-        <AddTaskBtnCont userId={userId} />
+        <AddTaskBtnCont userId={userId} refreshTasks={loadTasks} />
       </div>
 
       <div>
@@ -82,52 +76,7 @@ export default function Dashboard() {
       </div>
 
       <div>
-        <TaskTable />
-      </div>
-
-      <div className="flex flex-col w-full gap-3">
-        {task.map((task) => (
-          <li
-            className="gap-2 p-2 my-3 list-none bg-gray-200 border-2 border-gray-300 rounded-md"
-            key={task.id}
-          >
-            <div className="flex items-center justify-between p-2 ">
-              <div>
-                <div>
-                  <div>
-                    <h2 className="text-lg font-bold ">{task.title}</h2>
-
-                    <p className="text-gray-600 ">{task.description}</p>
-                    <p className="text-gray-600 ">Priority: {task.priority}</p>
-                    <p className="text-gray-600 ">Status: {task.status}</p>
-                  </div>
-
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setEditTaskId(task.id)}
-                      className="px-3 py-1 font-bold text-white bg-gray-500 border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 "
-                    >
-                      Edit
-                    </button>
-                    {editTaskId === task.id && (
-                      <EditTask
-                        task={task}
-                        onClose={() => setEditTaskId(null)}
-                        refreshTasks={loadTasks}
-                      />
-                    )}
-                    <button
-                      onClick={() => deleteTask(task.id)}
-                      className="px-3 py-1 font-bold text-white bg-red-500 border-gray-700 rounded-lg cursor-pointer hover:bg-red-700 "
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-        ))}
+        <TaskTable refreshTasks={loadTasks} tasks={task} />
       </div>
     </main>
   );
