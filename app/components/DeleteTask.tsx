@@ -35,9 +35,9 @@ const DeleteTask = ({ task, refreshTasks }) => {
     <div>
       <AlertDialog>
         <AlertDialogTrigger>
-          <button className="border-red-200 text-sm border rounded-lg px-2 py-1 text-red-700">
+          <span className="border-red-200 text-sm border rounded-lg px-2 py-1 text-red-700">
             Delete
-          </button>
+          </span>
         </AlertDialogTrigger>
 
         <AlertDialogContent>

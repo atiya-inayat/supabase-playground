@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 
-const FilterCards = () => {
+const FilterCards = ({ refreshKey }) => {
   const [todoCount, setTodoCount] = useState(0);
   const [inProgressCount, setInProgressCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
@@ -58,6 +58,29 @@ const FilterCards = () => {
     fetchTodoTasks();
     fetchInProgressTasks();
     fetchCompletedTasks();
+  }, [refreshKey]);
+
+  useEffect(() => {
+    const changes = supabase
+      .channel("db-changes") // creates a channel.
+      .on(
+        "postgres_changes",
+        {
+          event: "*", //listens for all database events.
+          schema: "public", // schema and table target your tasks table.
+          table: "tasks",
+        },
+        () => {
+          fetchTodoTasks();
+          fetchInProgressTasks();
+          fetchCompletedTasks();
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeAllChannels(changes);
+    };
   }, []);
 
   return (

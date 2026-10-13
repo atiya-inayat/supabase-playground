@@ -3,7 +3,7 @@ import Form from "./CreateTaskForm";
 import CurrentDate from "./CurrentDate";
 import { fetchTasks } from "@/lib/tasks";
 
-const AddTaskBtnCont = ({ userId, refreshTasks }) => {
+const AddTaskBtnCont = ({ userId, refreshTasks, refreshCounts }) => {
   const [showForm, setShowForm] = useState(false);
 
   return (
@@ -24,6 +24,7 @@ const AddTaskBtnCont = ({ userId, refreshTasks }) => {
         </button>
         {showForm && (
           <Form
+            refreshCounts={refreshCounts}
             userId={userId}
             refreshTasks={refreshTasks}
             onClose={() => setShowForm(false)}

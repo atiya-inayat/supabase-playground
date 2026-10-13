@@ -13,6 +13,7 @@ import { fetchTasks } from "@/lib/tasks";
 export default function Dashboard() {
   const [task, setTask] = useState([]);
   const [userId, setUserId] = useState("");
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const [editTaskId, setEditTaskId] = useState(null);
   const supabase = createClient();
@@ -43,20 +44,8 @@ export default function Dashboard() {
     loadTasks();
   }, []);
 
-  // ---------------- UPDATE ----------------
-
-  const deleteTask = async (id) => {
-    const { response, error } = await supabase
-      .from("tasks")
-      .delete()
-      .eq("id", id);
-
-    if (error) {
-      console.error("Error deleting task", error.message);
-      return;
-    }
-
-    await loadTasks();
+  const reloadTaskIncrement = async () => {
+    setRefreshKey(refreshKey + 1);
   };
 
   return (
@@ -68,11 +57,15 @@ export default function Dashboard() {
         </p>
       </div>
       <div className=" mt-2 p-4 w-full">
-        <AddTaskBtnCont userId={userId} refreshTasks={loadTasks} />
+        <AddTaskBtnCont
+          refreshCounts={reloadTaskIncrement}
+          userId={userId}
+          refreshTasks={loadTasks}
+        />
       </div>
 
       <div>
-        <FilterCards />
+        <FilterCards refreshKey={refreshKey} refreshTasks={loadTasks} />
       </div>
 
       <div>
