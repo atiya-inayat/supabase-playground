@@ -18,20 +18,20 @@ const page = () => {
     loadTask();
   }, []);
 
-  const reopenTask = async (taskId) => {
-    const { error } = await supabase
-      .from("tasks")
-      .update({ status: "todo" })
-      .eq("id", taskId);
+  // const reopenTask = async (taskId) => {
+  //   const { error } = await supabase
+  //     .from("tasks")
+  //     .update({ status: "todo" })
+  //     .eq("id", taskId);
 
-    if (error) {
-      console.error("Error reopening task:", error.message);
-      return;
-    }
+  //   if (error) {
+  //     console.error("Error reopening task:", error.message);
+  //     return;
+  //   }
 
-    // Remove the reopened task from this page
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-  };
+  //   // Remove the reopened task from this page
+  //   setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  // };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -79,12 +79,12 @@ const page = () => {
 
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <button
+                    {/* <button
                       onClick={() => reopenTask(task.id)}
                       className="text-sm font-medium text-blue-600 hover:text-blue-800"
                     >
                       Reopen
-                    </button>
+                    </button> */}
 
                     <DeleteTask task={task} />
                   </div>
