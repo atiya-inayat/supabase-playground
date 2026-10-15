@@ -1,16 +1,13 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
 import { useState } from "react";
 import EditTask from "./EditTask";
-import { fetchTasks } from "@/lib/tasks";
 import DeleteTask from "./DeleteTask";
-
-const supabase = createClient();
 
 const TaskTable = ({ refreshTasks, tasks }) => {
   const [editTaskId, setEditTaskId] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState("all");
+  const [searchFilter, setsearchFilter] = useState("");
 
   const getStatusColor = (status) => {
     if (status === "todo") return "text-purple-700";
@@ -32,15 +29,70 @@ const TaskTable = ({ refreshTasks, tasks }) => {
     }
   };
 
-  const filteredTasks =
-    selectedFilter === "all"
-      ? tasks
-      : tasks.filter((task) => task.status === selectedFilter);
+  const filteredTasks = tasks.filter((task) => {
+    const statusMatch =
+      selectedFilter === "all" || task.status === selectedFilter;
+
+    const searchMatch =
+      task.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
+      (task.description || "")
+        .toLowerCase()
+        .includes(searchFilter.toLowerCase());
+
+    return statusMatch && searchMatch;
+  });
 
   return (
     <div className=" rounded-lg shadow border border-gray-200 ">
       <div className="min-w-full h-20 flex items-center justify-center ">
-        <div className="w-full">filter search</div>
+        {/* <div className="w-full mx-2">
+          <input
+            className="border border-gray-300 p-2 rounded-md w-full "
+            type="text"
+            value={searchFilter}
+            onChange={(e) => setsearchFilter(e.target.value)}
+          />
+        </div> */}
+
+        <div className="w-full mx-3">
+          <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 shadow-sm transition-all focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="shrink-0 text-gray-400"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+
+            <input
+              className="w-full border-none bg-transparent text-sm text-gray-700 outline-none placeholder:text-gray-400"
+              type="text"
+              placeholder="Search tasks..."
+              value={searchFilter}
+              onChange={(e) => setsearchFilter(e.target.value)}
+            />
+
+            {searchFilter && (
+              <button
+                type="button"
+                onClick={() => setsearchFilter("")}
+                className="shrink-0 text-gray-400 transition-colors hover:text-gray-700"
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
+
         <div className="w-full flex gap-4  items-center justify-end  mr-1">
           <button
             className="border px-4 py-2 text-gray-500 text-sm hover:text-gray-800 focus:bg-purple-700 focus:text-white focus:font-bold rounded-md border-gray-300 cursor-pointer"
