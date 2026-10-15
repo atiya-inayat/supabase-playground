@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import toast, { Toaster } from "react-hot-toast";
 
 const CreateTaskForm = ({ userId, onClose, refreshTasks, refreshCounts }) => {
   const supabase = createClient();
@@ -42,6 +43,8 @@ const CreateTaskForm = ({ userId, onClose, refreshTasks, refreshCounts }) => {
     });
     await refreshTasks();
     await refreshCounts();
+    toast.success("Task created successfully...");
+
     onClose();
   };
 
@@ -165,6 +168,7 @@ const CreateTaskForm = ({ userId, onClose, refreshTasks, refreshCounts }) => {
           </div>
         </form>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };

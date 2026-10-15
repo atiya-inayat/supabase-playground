@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 const EditTask = ({ task, onClose, refreshTasks }) => {
   const supabase = createClient();
@@ -12,42 +13,6 @@ const EditTask = ({ task, onClose, refreshTasks }) => {
     created_at: new Date().toISOString(),
     id: null,
   });
-
-  // ---------------- UPDATE ----------------
-
-  // id = WHICH Todo should be updated?
-  // editTask = WHAT should that Todo become?
-  // const updateTask = async (id) => {
-  //   const { data, error } = await supabase
-  //     .from("tasks")
-  //     .update({
-  //       title: editTask.title,
-  //       description: editTask.description,
-  //       priority: editTask.priority,
-  //       status: editTask.status,
-  //     })
-  //     .eq("id", task.id)
-  //     .select();
-
-  //   console.log("Updating:", id, editTask);
-
-  //   if (error) {
-  //     console.error("Update failed...", error.message);
-  //     return;
-  //   }
-  //   setEditTask({
-  //     title: "",
-  //     description: "",
-  //     priority: "medium",
-  //     status: "todo",
-  //     created_at: new Date().toISOString(),
-  //     id: null,
-  //   });
-
-  //   setEditId(null);
-  //   await refreshTasks();
-  //   onClose();
-  // };
 
   const updateTask = async () => {
     console.log("Values being saved:", editTask);
@@ -77,6 +42,7 @@ const EditTask = ({ task, onClose, refreshTasks }) => {
     }
 
     await refreshTasks();
+    toast.success("Task updated successfully...");
     onClose();
   };
 
@@ -340,6 +306,7 @@ const EditTask = ({ task, onClose, refreshTasks }) => {
           </div>
         </form>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };
