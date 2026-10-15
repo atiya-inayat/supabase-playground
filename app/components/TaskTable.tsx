@@ -1,7 +1,7 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EditTask from "./EditTask";
 import { fetchTasks } from "@/lib/tasks";
 import DeleteTask from "./DeleteTask";
@@ -10,6 +10,7 @@ const supabase = createClient();
 
 const TaskTable = ({ refreshTasks, tasks }) => {
   const [editTaskId, setEditTaskId] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState("all");
 
   const getStatusColor = (status) => {
     if (status === "todo") return "text-purple-700";
@@ -31,58 +32,97 @@ const TaskTable = ({ refreshTasks, tasks }) => {
     }
   };
 
+  const filteredTasks =
+    selectedFilter === "all"
+      ? tasks
+      : tasks.filter((task) => task.status === selectedFilter);
+
   return (
-    <div className=" rounded-lg shadow border border-gray-200">
-      <table className="min-w-full divide-y divide-gray-200 bg-white text-sm text-left text-gray-500">
-        <thead className="bg-gray-100 text-xs font-semibold uppercase text-gray-500 tracking-wider">
-          <tr>
-            <th className="px-6 py-3">TASK</th>
-            <th className="px-6 py-3">DESCRIPTION</th>
-            <th className="px-6 py-3">PRIORITY</th>
-            <th className="px-6 py-3">STATUS</th>
-            <th className="px-6 py-3">CREATED</th>
-            <th className="px-6 py-3">ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {tasks.map((task) => (
-            <tr
-              className="hover:bg-gray-50 odd:bg-white even:bg-gray-50/50 transition-colors"
+    <div className=" rounded-lg shadow border border-gray-200 ">
+      <div className="min-w-full h-20 flex items-center justify-center ">
+        <div className="w-full">filter search</div>
+        <div className="w-full flex gap-4  items-center justify-end  mr-1">
+          <button
+            className="border px-4 py-2 text-gray-500 text-sm hover:text-gray-800 focus:bg-purple-700 focus:text-white focus:font-bold rounded-md border-gray-300 cursor-pointer"
+            onClick={() => setSelectedFilter("all")}
+          >
+            All
+          </button>
+          <button
+            className="border px-4 py-2 text-gray-500 text-sm hover:text-gray-800 focus:bg-purple-700 focus:text-white focus:font-bold rounded-md border-gray-300 cursor-pointer"
 
-              key={task.id}
-            >
-              <td className="px-6 py-4 font-bold  text-gray-900 whitespace-nowrap">
-                {task.title}
-              </td>
-              <td className="max-w-xs truncate overflow-hidden px-6 py-4 text-sm text-gray-500">
-                {task.description}
-              </td>
-              <td className={getPriorityColor(task.priority)}>
-                {task.priority}
-              </td>
-              <td className={getStatusColor(task.status)}>{task.status}</td>
-              <td>{new Date(task.created_at).toISOString().split("T")[0]}</td>
-              <td className="gap-2 flex">
-                <button
-                  onClick={() => setEditTaskId(task.id)}
-                  className="border-purple-200 text-sm border rounded-lg px-2 py-1 text-purple-700"
-                >
-                  Edit
-                </button>
-                {editTaskId === task.id && (
-                  <EditTask
-                    task={task}
-                    onClose={() => setEditTaskId(null)}
-                    refreshTasks={refreshTasks}
-                  />
-                )}
+            onClick={() => setSelectedFilter("todo")}
+          >
+            Todo
+          </button>
+          <button
+            className="border px-4 py-2 text-gray-500 text-sm hover:text-gray-800 focus:bg-purple-700 focus:text-white focus:font-bold rounded-md border-gray-300 cursor-pointer"
 
-                <DeleteTask task={task} refreshTasks={refreshTasks} />
-              </td>
+            onClick={() => setSelectedFilter("progress")}
+          >
+            In Progress
+          </button>
+          <button
+            className="border px-4 py-2 text-gray-500 text-sm hover:text-gray-800 focus:bg-purple-700 focus:text-white focus:font-bold rounded-md border-gray-300 cursor-pointer"
+
+            onClick={() => setSelectedFilter("done")}
+          >
+            Done
+          </button>
+        </div>
+      </div>
+      <div>
+        <table className="min-w-full  divide-y divide-gray-200 bg-white text-sm text-left text-gray-500">
+          <thead className="bg-gray-100 text-xs font-semibold uppercase text-gray-500 tracking-wider">
+            <tr>
+              <th className="px-6 py-3">TASK</th>
+              <th className="px-6 py-3">DESCRIPTION</th>
+              <th className="px-6 py-3">PRIORITY</th>
+              <th className="px-6 py-3">STATUS</th>
+              <th className="px-6 py-3">CREATED</th>
+              <th className="px-6 py-3">ACTIONS</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {filteredTasks.map((task) => (
+              <tr
+                className="hover:bg-gray-50 odd:bg-white even:bg-gray-50/50 transition-colors"
+
+                key={task.id}
+              >
+                <td className="px-6 py-4 font-bold  text-gray-900 whitespace-nowrap">
+                  {task.title}
+                </td>
+                <td className="max-w-xs truncate overflow-hidden px-6 py-4 text-sm text-gray-500">
+                  {task.description}
+                </td>
+                <td className={getPriorityColor(task.priority)}>
+                  {task.priority}
+                </td>
+                <td className={getStatusColor(task.status)}>{task.status}</td>
+                <td>{new Date(task.created_at).toISOString().split("T")[0]}</td>
+                <td className="gap-2 flex">
+                  <button
+                    onClick={() => setEditTaskId(task.id)}
+                    className="border-purple-200 text-sm border rounded-lg px-2 py-1 text-purple-700"
+                  >
+                    Edit
+                  </button>
+                  {editTaskId === task.id && (
+                    <EditTask
+                      task={task}
+                      onClose={() => setEditTaskId(null)}
+                      refreshTasks={refreshTasks}
+                    />
+                  )}
+
+                  <DeleteTask task={task} refreshTasks={refreshTasks} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
