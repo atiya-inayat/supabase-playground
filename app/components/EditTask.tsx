@@ -306,7 +306,6 @@ const EditTask = ({ task, onClose, refreshTasks }) => {
           </div>
         </form>
       </div>
-      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 };
