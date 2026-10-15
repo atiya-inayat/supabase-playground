@@ -49,8 +49,8 @@ export default function Dashboard() {
   };
 
   return (
-    <main className="flex bg-white flex-col  w-full   min-h-screen   text-black ">
-      <div className="w-full flex items-center justify-between border-b border-gray-300">
+    <main className="flex  flex-col  min-w-0   min-h-screen border  border-gray-100 text-black ">
+      <div className="w-full flex sticky top-0  items-center bg-white justify-between  border-b border-gray-300">
         <h1 className="text-lg font-bold p-4">Dashboard</h1>
         <p className="p-4 text-gray-400 text-sm">
           <CurrentDate />

@@ -4,11 +4,14 @@ import { createClient } from "@/lib/supabase/client";
 import Logout from "./Logout";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTaskCount } from "../context/TaskCountContext";
 
 const supabase = createClient();
 
 const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
   const [user, setUser] = useState(null);
+
+  const { totalTasks, completedCount } = useTaskCount();
 
   const fetchUser = async () => {
     const {
@@ -31,7 +34,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
 
   return (
     <div
-      className={`flex flex-col  h-screen p-4 bg-white ${sidebarOpen ? "w-64 " : "w-16 items-center"}  transition-all duration-300 ease-in `}
+      className={`flex flex-col justify-between   fixed top-0 left-0  h-screen p-4 bg-white ${sidebarOpen ? "w-64 " : "w-16 items-center"}  transition-all duration-300 ease-in `}
     >
       {/* Top */}
       <div>
@@ -80,7 +83,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
                 sidebarOpen ? "block" : "hidden"
               }`}
             >
-              5
+              {totalTasks}
             </span>
           </Link>
 
@@ -102,7 +105,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
                 sidebarOpen ? "block" : "hidden"
               }`}
             >
-              2
+              {completedCount}
             </span>
           </Link>
 

@@ -2,15 +2,24 @@
 
 import { useState } from "react";
 import SideBar from "@/app/components/SideBar";
+import { TaskCountsProvider } from "@/app/context/TaskCountContext";
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className="flex min-h-screen">
-      <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+    <TaskCountsProvider>
+      <div className="min-h-screen w-full">
+        <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-      <main className="flex-1">{children}</main>
-    </div>
+        <main
+          className={`${
+            sidebarOpen ? "ml-64" : "ml-16"
+          } min-w-0 transition-all duration-300`}
+        >
+          {children}
+        </main>
+      </div>
+    </TaskCountsProvider>
   );
 }
