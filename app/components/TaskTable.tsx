@@ -45,18 +45,9 @@ const TaskTable = ({ refreshTasks, tasks }) => {
   return (
     <div className=" rounded-lg shadow border border-gray-200 ">
       <div className="min-w-full h-20 flex items-center justify-center ">
-        {/* <div className="w-full mx-2">
-          <input
-            className="border border-gray-300 p-2 rounded-md w-full "
-            type="text"
-            value={searchFilter}
-            onChange={(e) => setsearchFilter(e.target.value)}
-          />
-        </div> */}
-
         <div className="w-full mx-3">
           <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 shadow-sm transition-all focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-100">
-            <svg
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
               height="18"
@@ -70,7 +61,7 @@ const TaskTable = ({ refreshTasks, tasks }) => {
             >
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.35-4.35" />
-            </svg>
+            </svg> */}
 
             <input
               className="w-full border-none bg-transparent text-sm text-gray-700 outline-none placeholder:text-gray-400"
