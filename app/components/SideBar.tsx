@@ -5,6 +5,7 @@ import Logout from "./Logout";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTaskCount } from "../context/TaskCountContext";
+import Image from "next/image";
 
 const supabase = createClient();
 
@@ -30,6 +31,16 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
 
   useEffect(() => {
     fetchUser();
+
+    const handleProfileUpdated = () => {
+      fetchUser();
+    };
+
+    window.addEventListener("profile-updated", handleProfileUpdated);
+
+    return () => {
+      window.removeEventListener("profile-updated", handleProfileUpdated);
+    };
   }, []);
 
   return (
@@ -127,9 +138,21 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
 
         <div className="flex flex-col gap-3 p-2 bg-white border-2 border-gray-100 text-sm rounded-md">
           <div className="flex items-center gap-2">
-            <div className="border rounded-full text-white px-2 py-2 bg-purple-700">
-              PP
-            </div>
+            {user?.user_metadata?.avatar_url ? (
+              <img
+                src={user.user_metadata.avatar_url}
+                alt="Profile"
+                width={200}
+                height={100}
+                className="h-10 w-10 rounded-full border object-cover"
+              />
+            ) : (
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-700 font-semibold text-white">
+                {(user?.user_metadata?.name || user?.email || "U")
+                  .charAt(0)
+                  .toUpperCase()}
+              </div>
+            )}
 
             <div
               className={`flex  flex-col ${sidebarOpen ? "block" : "hidden"}`}
