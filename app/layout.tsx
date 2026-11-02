@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "react-hot-toast";
+// import { TaskCountsProvider } from "./context/TaskCountContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
+        {/* <TaskCountsProvider> */}
         <NextTopLoader
           color="#3b82f6"
           initialPosition={0.08}
@@ -33,6 +35,7 @@ export default function RootLayout({ children }) {
         <Toaster position="top-right" reverseOrder={false} />
 
         {children}
+        {/* </TaskCountsProvider> */}
       </body>
     </html>
   );
