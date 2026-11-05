@@ -5,12 +5,12 @@ import Logout from "./Logout";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTaskCount } from "../context/TaskCountContext";
-import Image from "next/image";
 
 const supabase = createClient();
 
 const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
   const [user, setUser] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState(null);
 
   const { totalTasks, completedCount } = useTaskCount();
 
@@ -26,6 +26,24 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
     } else {
       // console.log("User fetched successfully from sidebar :", user);
       setUser(user);
+
+      // 1. Fetch the avatar path from the database
+      const { data: profile } = await supabase
+        .from("profiles") // table
+        .select("avatar_path") // Tells Supabase which column we want to retrieve. We only need avatar_path, not all the profile information.
+        .eq("id", user.id) //id = the column in our database. - user.id = the logged-in user's ID. -- "Find the profile record where the database ID matches the logged-in user's ID."
+        .maybeSingle(); // We expect zero or one matching profile record. if multiple present , return an error
+
+      // Check if the user has an avatar path
+      if (profile?.avatar_path) {
+        const { data } = supabase.storage
+          .from("avatars")
+          .getPublicUrl(profile.avatar_path); // Takes the image path and generates its public URL.
+
+        setAvatarUrl(data.publicUrl);
+      } else {
+        setAvatarUrl(null);
+      }
     }
   };
 
@@ -138,9 +156,9 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
 
         <div className="flex flex-col gap-3 p-2 bg-white border-2 border-gray-100 text-sm rounded-md">
           <div className="flex items-center gap-2">
-            {user?.user_metadata?.avatar_url ? (
+            {avatarUrl ? (
               <img
-                src={user.user_metadata.avatar_url}
+                src={avatarUrl}
                 alt="Profile"
                 width={200}
                 height={100}
